@@ -1,0 +1,130 @@
+option java_package = "com.lianzhong.mobileplatform.game.protobuf";
+option java_outer_classname = "MobileGame";
+
+//0x00000262 = 610
+message ReqGameRegister{
+	required string userName = 1; 		//用户名 5-19位 字母，数字，下划线组成
+	required string password = 2;		//密码	8-15位 下划线，特殊字符，不区分大小写
+	required int32  terminal = 3; 		//终端ID，ANDROID："1"，IPHONE："2"，IPAD："3"
+	required string deviceNumber = 4; 	//设备号，机器标识 ，MAC地址
+	required int32  gameId = 5; 		//登录游戏ID
+	required string comeFrom = 6; 		//渠道来源
+	required string token = 7; 		//加密串，客户端与服务端匹配正确，MD5（设备号+登录游戏ID+渠道来源）
+	optional string userNameApple = 8;	//苹果用户名
+}
+
+message AckGameRegister{
+	required int32  result = 1;		//0:失败，1:成功，2:联众账号已存在，3:联众账号格式非法
+	optional string errorMsg = 2;   	//错误信息
+}
+
+//0x00000263 = 611
+message ReqGameLogin{
+	required string userName = 1; 		//用户名 5-19位 字母，数字，下划线组成
+	required string password = 2;		//密码	8-15位 下划线，特殊字符，不区分大小写
+	required int32  terminal = 3; 		//终端ID，ANDROID："1"，IPHONE："2"，IPAD："3"
+	required string deviceNumber = 4; 	//设备号，机器标识 ，MAC地址
+	required int32  gameId = 5; 		//登录游戏ID
+	required string comeFrom = 6; 		//渠道来源
+	required string token = 7; 		//加密串，客户端与服务端匹配正确，MD5（设备号+登录游戏ID+渠道来源）
+}
+
+message AckGameLogin{
+	required int32 result = 1;				//0:失败，1:成功
+	optional string userName = 2; 				//用户名 y
+	optional string roleName = 3; 				//角色名 y
+	optional int32 coin = 4 ;				//联众币
+	optional int32 gameCoin = 5; 				//万能豆
+	optional bytes certHaveRole = 6;			//含角色的证书数据 y
+	optional bytes certNoRole = 7;				//不含角色的证书数据 y
+	optional int32 curVersion = 8;				//服务器的当前最新版本号 y
+	optional string playEnable = 9;				//不更新是否能继续游戏 "y"可以游戏 "n"不可以，必须更新 y
+	optional string downloadUrl = 10;			//下载地址 y
+	optional string ifStopService = 11;			//斗地主是否停服维护 "y"停服维护中 "n"没有维护，达人麻将相反。  y
+	optional string stopServiceMsg = 12;			//系统提示消息（维护状态中，为维护信息）y
+	optional int32 downloadReason = 13; 			//下载原因：0 版本不对;1屏幕不对
+	optional int32 gameId = 14;           			//游戏ID        y
+	repeated OgRoomInfo matchSvrList = 15;			//所有的比赛服务器列表 y
+	repeated JssInfo payJssList = 16;  			// 支付JSS服务器，小商城的代理服务器。 modify at 20120321 y
+	repeated JssInfo gameJssList = 17; 			// 游戏JSS服务器，服务器。
+	optional int32 sex = 18;				//性别 y
+	optional string ifDisplaySearch = 19;         			//是否显示搜索（斗地主用）"y"显示 "n"不显示。 modify at 20120413
+	repeated OgBulletinInfo bulletinList = 20;		//显示公告
+	optional string versionInfo = 21;			//版本信息（更新原因）
+	optional string userMsgUrl = 22;				//用户消息的URL  ,请求访问url参数type=1 统计未读消息，type=2 显示所有消息。
+}
+
+//游戏房间结构
+message OgRoomInfo
+{
+	required string RoomId = 1;		//房间ID
+	required string RoomRank = 2 ; 		//房间等级 1新手 2高手 3至尊
+	required string RoomIp = 3 ; 		//房间IP
+	required string RoomPort = 4; 		//房间Port
+	required string RoomStatus = 5;		//0开启 1关闭
+	required string RoomMinGold = 6;	//最少金币
+	required string RoomMaxGold = 7;	//最大金币
+	required string RoomMinPlay = 8;	//最少局数
+	optional string RoomType = 9;		//房间类型  0普通，1比赛
+	optional string ServerType = 10; 	//服务器类型 0无  7新浪专服	
+	optional string Description = 11; 	//房间描述,包括准入条件等内容
+	optional string RoomName = 12;    	//房间名称
+}
+
+message JssInfo
+{
+	optional string roomIP = 1;		//服务器IP
+	optional string roomPort = 2 ;		// 服务器端口
+  	optional string remark = 3;	  	//服务器标注
+}
+
+//游戏公告
+message OgBulletinInfo
+{
+	optional string title = 1;     //标题
+	optional string content = 2;   //内容
+}
+
+//-----------------------------------------------------------------------------------------
+// 联众账号、通行证通用的登录接口
+// #define GLMP_GAME_ACCOUNT_LOGIN   (0x00000265 = 613)
+// message ReqGameAccountLogin
+// message AckGameAccountLogin
+
+message ReqGameAccountLogin{
+	required string account = 1; 		//账号，通行证（手机和邮箱）
+	required int32 	accountType = 2;	//账号类型：0普通账号、1通行证
+	required string password = 3;		//密码	8-15位 下划线，特殊字符，不区分大小写
+	required int32  terminal = 4; 		//终端ID，ANDROID："1"，IPHONE："2"，IPAD："3"
+	required string deviceNumber = 5; 	//设备号，机器标识 ，MAC地址
+	required int32  gameId = 6; 		//登录游戏ID
+	required string comeFrom = 7; 		//渠道来源
+	required string token = 8; 			//加密串，客户端与服务端匹配正确，MD5（设备号+登录游戏ID+渠道来源）
+}
+
+message AckGameAccountLogin{
+	required int32 result = 1;			//0:失败，1:成功
+	optional string userName = 2; 			//用户名 y
+	optional string roleName = 3; 			//角色名 y
+	optional int32 coin = 4 ;			//联众币
+	optional int32 gameCoin = 5; 			//万能豆
+	optional bytes certHaveRole = 6;		//含角色的证书数据 y
+	optional bytes certNoRole = 7;			//不含角色的证书数据 y
+	optional int32 curVersion = 8;			//服务器的当前最新版本号 y
+	optional string playEnable = 9;			//不更新是否能继续游戏 "y"可以游戏 "n"不可以，必须更新 y
+	optional string downloadUrl = 10;		//下载地址 y
+	optional string ifStopService = 11;		//斗地主是否停服维护 "y"停服维护中 "n"没有维护，达人麻将相反。  y
+	optional string stopServiceMsg = 12;		//系统提示消息（维护状态中，为维护信息）y
+	optional int32 downloadReason = 13; 		//下载原因：0 版本不对;1屏幕不对
+	optional int32 gameId = 14;           		//游戏ID        y
+	repeated OgRoomInfo matchSvrList = 15;		//所有的比赛服务器列表 y
+	repeated JssInfo payJssList = 16;  		//支付JSS服务器，小商城的代理服务器。 modify at 20120321 y
+	repeated JssInfo gameJssList = 17; 		//游戏JSS服务器，服务器。
+	optional int32 sex = 18;			//性别 y
+	optional string ifDisplaySearch = 19;   	//是否显示搜索（斗地主用）"y"显示 "n"不显示。 modify at 20120413
+	repeated OgBulletinInfo bulletinList = 20;	//显示公告
+	optional string versionInfo = 21;		//版本信息（更新原因）
+	optional string userMsgUrl = 22;		//用户消息的URL  ,请求访问url参数type=1 统计未读消息，type=2 显示所有消息。
+	optional string message = 23; 			//失败提示信息
+	optional string displayName = 24;           	//显示名
+}

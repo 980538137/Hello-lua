@@ -176,7 +176,8 @@ void UpdateLayer::executeScriptFile()
     CCFileUtils::sharedFileUtils()->addSearchPath("script");
 #endif
     
-    std::string path = CCFileUtils::sharedFileUtils()->fullPathForFilename("hello.lua");
+//    std::string path = CCFileUtils::sharedFileUtils()->fullPathForFilename("hello.lua");
+    std::string path = CCFileUtils::sharedFileUtils()->fullPathForFilename("layers/LoginLayer.lua");
     CCLog("HelloPath:%s",path.c_str());
     pEngine->executeScriptFile(path.c_str());
     
