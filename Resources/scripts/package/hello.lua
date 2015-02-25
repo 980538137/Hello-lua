@@ -130,8 +130,8 @@ local function main()
         end
 
         -- -- add moving dog
-        -- local spriteDog = creatDog()
-        -- layerFarm:addChild(spriteDog)
+        local spriteDog = creatDog()
+        layerFarm:addChild(spriteDog)
 
         -- handing touch events
         local touchBeginPoint = nil

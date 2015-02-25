@@ -68,8 +68,11 @@ AssetsManager* UpdateLayer::getAssetsManager()
     
     if (!pAssetsManager)
     {
-        pAssetsManager = new AssetsManager("https://raw.githubusercontent.com/980538137/AssetsManagerTest/master/package.zip",
-                                           "https://raw.githubusercontent.com/980538137/AssetsManagerTest/master/version",
+//        pAssetsManager = new AssetsManager("https://raw.githubusercontent.com/980538137/AssetsManagerTest/master/package.zip",
+//                                           "https://raw.githubusercontent.com/980538137/AssetsManagerTest/master/version",
+//                                           pathToSave.c_str());
+        pAssetsManager = new AssetsManager("https://raw.githubusercontent.com/980538137/Hello-lua/master/Resources/scripts/package.zip",
+                                           "https://raw.githubusercontent.com/980538137/AssetsManagerTest/master/Resources/scripts/version",
                                            pathToSave.c_str());
         pAssetsManager->setDelegate(this);
         pAssetsManager->setConnectionTimeout(3);
